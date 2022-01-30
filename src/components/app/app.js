@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Component} from "react";
 
 import AppHeader from "../app-header";
 import SearchPanel from "../search-panel";
@@ -14,25 +14,48 @@ const AppBlock = styled.div`
   max-width: 800px;
 `
 
-const App = () => {
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data : [
+        {label: 'Going to lealrn React', important: true, id: 'wqe'},
+        {label: 'That is so good', important: false, id: 'hrw'},
+        {label: 'I need a break...', important: false, id: 'gfs'}
+      ]
+    };
+    this.deleteItem = this.deleteItem.bind(this);
+  }
 
-  const data = [
-    {label: 'Going to lealrn React', important: true, id: 'wqe'},
-    {label: 'That is so good', important: false, id: 'wrw'},
-    {label: 'I need a break...', important: false, id: 'gfs'}
-  ];
+  deleteItem(id) {
+    this.setState(({data}) => {
+      const index = data.findIndex(elem => elem.id === id);
+      
+      const before = data.slice(0, index);
+      const after = data.slice(index + 1);
 
-  return (
-    <AppBlock>
-      <AppHeader/>
-      <div className="search-panel d-flex">
-        <SearchPanel/>
-        <PostStatusFilter/>
-      </div>
-      <PostList posts={data} />
-      <PostAddForm/>
-    </AppBlock>
-    )
+      const newArr = [...before, ...after];
+
+      return {
+        data: newArr
+      }
+    });
+  }
+
+  render() {
+    return (
+      <AppBlock>
+        <AppHeader/>
+        <div className="search-panel d-flex">
+          <SearchPanel/>
+          <PostStatusFilter/>
+        </div>
+        <PostList 
+          posts={this.state.data} 
+          onDelete={this.deleteItem}/>
+        <PostAddForm/>
+      </AppBlock>
+      )
+  }
 }
 
-export default App;
