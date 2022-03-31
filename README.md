@@ -11,7 +11,7 @@ React
 ___
 
 
-![alt text](screenshots.png)
+![alt text](screenshots.PNG)
 
 To run, you need to download the files and write in the console:
 
